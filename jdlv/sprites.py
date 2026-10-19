@@ -1,0 +1,73 @@
+# -*- coding: utf-8 -*-
+"""
+Pixel arts de Salamèche et Pikachu, repris case par case de la première
+version du projet (make_salamèche / make_pikachu).
+"""
+import numpy as np
+
+SALAMECHE = """
+...N.........NNNN....
+..NRN.......NOOOON...
+.NRRN......NOOOOOON..
+.NRRN......NOOOOOON..
+NRRRRN....NOOOOOOOON.
+NRJRRN....NOOONBOOOON
+NRJJRN...NOOOONNOOOON
+.NNJN....NOOOONNOOOON
+..NON...NOOOOOOOOOON.
+..NOON.NOOOOOOOOONN..
+...NOONNOOONOONNN....
+...NOONOOOOONJJN.....
+....NONOOONNJJJN.....
+.....NNOOOOJJJNBN....
+......NNOOOJJNNN.....
+.......NNONNN........
+.......NBOBN.........
+.......NNNN..........
+"""
+
+PIKACHU = """
+................N..
+.....NN........NJN.
+....NGN.......NJMMN
+....NJN....NNNJMMMN
+...NJMN..NNGGNMMMN.
+...NJJJNNJJGNMMMN..
+..NJJJJJJJJNNMMN...
+.NJJJJJJJJMNGNMMN..
+NBJJJJJJJJJNGGNMN..
+NNJJJJJJJJJMNNMN...
+NJJJJBNJJJMMNNN....
+.NJJJNNRRJMGGN.....
+..NMJJJRMMMMMN.....
+.NJMMMMMMNMMGN.....
+.NNNJJJJNJMMMN.....
+..NMNJJJJNMMMN.....
+..NNNNNMMMMMN......
+.......NNNMNN......
+........NJJMN......
+.........NNN.......
+"""
+
+PALETTE = {
+    "N": (24, 20, 28),      # contour
+    "B": (255, 255, 255),   # blanc (yeux)
+    "R": (244, 67, 54),     # rouge
+    "J": (253, 216, 53),    # jaune
+    "O": (235, 119, 19),    # orange Salamèche
+    "M": (244, 127, 23),    # brun-orangé Pikachu
+    "G": (97, 97, 97),      # gris
+}
+
+
+def vers_rgba(dessin):
+    """Pixel art texte -> tableau (h, w, 4) uint8."""
+    lignes = [l for l in dessin.strip("\n").split("\n")]
+    largeur = max(len(l) for l in lignes)
+    img = np.zeros((len(lignes), largeur, 4), np.uint8)
+    for y, ligne in enumerate(lignes):
+        for x, c in enumerate(ligne):
+            if c in PALETTE:
+                img[y, x, :3] = PALETTE[c]
+                img[y, x, 3] = 255
+    return img
